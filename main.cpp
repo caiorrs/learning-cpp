@@ -1,6 +1,8 @@
 #include "add.h"
 
 #include <iostream>
+#include <cstdio>
+#include <iomanip> // for std::setprecision()
 
 // comentar a linha abaixo para desabilitar debug
 //#define ENABLE_DEBUG
@@ -63,6 +65,77 @@ int getValueFromUser()
     std::cin >> input;
 
     return input;
+}
+
+void printTypeSizes()
+{
+#ifdef ENABLE_DEBUG
+    std::cerr << "printTypeSizes chamada\n";
+#endif
+    std::cout << "bool: " << sizeof(bool) << " bytes\n";
+    std::cout << "char: " << sizeof(char) << " bytes\n";
+    std::cout << "wchar_t: " << sizeof(wchar_t) << " bytes\n";
+    std::cout << "char16_t: " << sizeof(char16_t) << " bytes\n";
+    std::cout << "char32_t: " << sizeof(char32_t) << " bytes\n";
+    std::cout << "short: " << sizeof(short) << " bytes\n";
+    std::cout << "int: " << sizeof(int) << " bytes\n";
+    std::cout << "long: " << sizeof(long) << " bytes\n";
+    std::cout << "long long: " << sizeof(long long) << " bytes\n";
+    std::cout << "float: " << sizeof(float) << " bytes\n";
+    std::cout << "double: " << sizeof(double) << " bytes\n";
+    std::cout << "long double: " << sizeof(long double) << " bytes\n";
+    // int é signed implicitamente
+    // char pode ser signed ou unsigned, normalmente signed
+    // prefirir usar signed para evitar problemas
+    std::cout << "sizeof: " << sizeof(size_t) << " bytes\n";
+
+    // inteiros de tamanho fixo
+    // signed
+    // int8_t, int16_t, int32_t, int64_t
+    // unsigned
+    // uint8_t, uint16_t, uint32_t, uint64_t
+    uint8_t teste;
+    std::cout << "TAMANHO UINT8: " << sizeof(teste) << " bytes\n";
+    // teste para saber se int8 e uint8 são tratados como char ou como int
+    uint8_t c1 = 65;
+    int8_t c2 = 65;
+    std::cout << c1 << "\n";
+    std::cout << c2 << "\n";
+    // se aparecer A -> trata como char
+    // preferencialmente usar int16, para ter certeza que será tratado como inteiro
+
+    // tipos de int mais rápidos com pelo menos x bits
+    // int_fast8_t, int_fast16_t, int_fast32_t, int_fast64_t
+    // uint_fast8_t, uint_fast16_t, uint_fast32_t, uint_fast64_t
+
+    // menores int com no minimo x bits
+    // int_least8_t, int_least16_t, int_least32_t, int_least64_t
+    // uint_least8_t, uint_least16_t, uint_least32_t, uint_least64_t
+
+    // boas práticas
+    int x(5);      // 5 means integer
+    double y(5.0); // 5.0 is a floating point literal (no suffix means double type by default)
+    float z(5.0f); // 5.0 is a floating point literal, f suffix means float type
+
+    // exibição de ponto flutuante
+    std::cout << 5.0 << "\n";
+    std::cout << 5.1f << "\n";
+    std::cout << 9876543.21 << "\n"; // deve exibir em formato cientifico
+    // por padrão cout trunca em 6 digitos significativos
+    std::cout << std::setprecision(16); // altera a precisão de cout para 16 digitos significativos
+    std::cout << 9876543.21 << "\n";
+
+    // float tem precisao entre 6 e 9 digitos significativos
+    // double tem precisao entre 15 e 18 digitos significativos
+    // long double tem precisao de 15, 18 ou 33 digitos dependendo de quantos
+    // bytes ocupa
+
+    // prefirir o uso de double
+
+    // infinito e NaN
+    // std::cout << 1 / 0 << "\n"; // +inf
+    // std::cout << -1 / 0 << "\n"; // -inf
+    // std::cout << 0.0 / 0.0 << "\n"; // indeterminado
 }
 
 void printAdd(int x, int y)
@@ -167,6 +240,10 @@ int main()
 
     std::cout << add(1, multiply(2, 3)) << '\n'; // evaluates 1 + (2 * 3)
     std::cout << add(1, add(2, 3)) << '\n';      // evaluates 1 + (2 + 3)
+
+    printTypeSizes();
+
+    std::getchar();
 
     return 0;
 }
