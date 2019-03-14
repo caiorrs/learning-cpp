@@ -67,6 +67,14 @@ int getValueFromUser()
     return input;
 }
 
+bool isEqual(int x, int y)
+{
+#ifdef ENABLE_DEBUG
+    std::cerr << "isEqual foi chamada\n";
+#endif
+    return (x == y);
+}
+
 void printTypeSizes()
 {
 #ifdef ENABLE_DEBUG
@@ -136,6 +144,51 @@ void printTypeSizes()
     // std::cout << 1 / 0 << "\n"; // +inf
     // std::cout << -1 / 0 << "\n"; // -inf
     // std::cout << 0.0 / 0.0 << "\n"; // indeterminado
+
+    // boolean
+    bool myBool;
+    myBool = true;
+    myBool = !false; // true
+    // true e false são avaliados para 1 e 0 respectivamente
+    std::cout << "Booleans\n";
+    std::cout << "Valor de true eh: " << true << "\n";
+    std::cout << "Valor de false eh: " << false << "\n";
+    // alterar saida para formato true e false
+    std::cout << std::boolalpha;
+    std::cout << "Valor de true eh: " << true << "\n";
+    std::cout << "Valor de false eh: " << false << "\n";
+    // desativar o formato escolhido
+    std::cout << std::noboolalpha;
+
+    // intro to if statements
+    if (true)
+    {
+        std::cout << "The condition is true\n";
+    }
+    else
+    {
+        std::cout << "The condition is false\n";
+    }
+
+    myBool = false;
+
+    if (myBool)
+    {
+        std::cout << "myBool is true\n";
+    }
+    else
+    {
+        std::cout << "myBool is false\n";
+    }
+
+    if (isEqual(2, 3))
+    {
+        std::cout << "The numbers are equal";
+    }
+    else
+    {
+        std::cout << "The numbers are different";
+    }
 }
 
 void printAdd(int x, int y)
