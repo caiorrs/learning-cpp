@@ -19,6 +19,19 @@
 
 #define PRINT_CAIO
 
+void readCharInput()
+{
+#ifdef ENABLE_DEBUG
+    std::cerr << "readCharInput chamada";
+#endif
+
+    std::cout << "Digite um caractere para saber seu correspondente em asc: ";
+    char chInput;
+    std::cin >> chInput;
+
+    std::cout << "O valor de " << chInput << " em ASCII eh " << static_cast<int>(chInput) << "\n";
+}
+
 void funcao()
 {
 #ifdef PRINT_CAIO
@@ -183,12 +196,25 @@ void printTypeSizes()
 
     if (isEqual(2, 3))
     {
-        std::cout << "The numbers are equal";
+        std::cout << "The numbers are equal\n";
     }
     else
     {
-        std::cout << "The numbers are different";
+        std::cout << "The numbers are different\n";
     }
+
+    // char
+
+    // inicializações possíveis
+    char ch1{97};  // ASCII = 'a'
+    char ch2{'a'}; // mesmo que acima
+
+    std::cout << "char1 - " << ch1 << "\n";
+    std::cout << "char2 - " << ch2 << "\n";
+
+    // type cast / static cas
+    std::cout << "char1 - " << ch1 << "\n";
+    std::cout << "codigo ASCII char1 - " << static_cast<int>(ch1) << "\n";
 }
 
 void printAdd(int x, int y)
@@ -295,6 +321,8 @@ int main()
     std::cout << add(1, add(2, 3)) << '\n';      // evaluates 1 + (2 + 3)
 
     printTypeSizes();
+
+    readCharInput();
 
     std::getchar();
 
