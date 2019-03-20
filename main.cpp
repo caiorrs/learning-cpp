@@ -1,8 +1,10 @@
 #include "add.h"
+#include "constants.h"
 
 #include <iostream>
 #include <cstdio>
 #include <iomanip> // for std::setprecision()
+#include <cmath>   // para potenciacao por exemplo
 
 // comentar a linha abaixo para desabilitar debug
 //#define ENABLE_DEBUG
@@ -15,9 +17,52 @@
 // define não importa onde é escrito, pois o pre-processador ignora o código C
 // diretivas para o pre processador valem a partir do momento que são declaradas
 
-// compilacao condicional
+// compilacao condicional // #ifdef/#ifndef
 
 #define PRINT_CAIO
+
+void divisaoCast()
+{
+    // divisao de inteiros resulta em inteiro
+    // mas ha uma forma de resultar em float
+    std::cout << static_cast<double>(5) / 4 << "\n";
+
+    // modulo só funciona com operandos inteiros
+
+    // a partir do C++11 se um dos operandos da divisão for negativo
+    // o compilador pode arredondar o resultado para cima ou para baixo
+    // no caso do módulo, o resultado pode ser negativo ou positivo
+}
+
+void literals()
+{
+#ifdef ENABLE_DEBUG
+    std::cerr << "literals chamada\n"
+#endif
+        int radius{5};
+    double circumference = 2 * radius * constants::pi;
+    int a = 5;
+    int b = 0xFF;
+    int c = 012;    // octal 12, decimal 10
+    int d = 0b1010; // 1010 binario, 10 em decimal
+
+    // para valores grandes ou binarios, é possível usar ` como separador visual
+    // ex binario 0b0011`1100`0101`1010
+    // ex inteiro 1`123`123
+
+    std::cout << a << "\n";
+    std::cout << b << "\n";
+    // cout imprime como decimal, faz a conversao antes de imprimir
+
+    // modificadores de literais
+    // int	u or U	unsigned int
+    // int	l or L	long
+    // int	ul, uL, Ul, UL, lu, lU, Lu, or LU	unsigned long
+    // int	ll or LL	long long
+    // int	ull, uLL, Ull, ULL, llu, llU, LLu, or LLU	unsigned long long
+    // double	f or F	float
+    // double	l or L	long double
+}
 
 void readCharInput()
 {
@@ -258,6 +303,18 @@ int main()
     std::cerr << "main chamada\n";
 #endif
 
+    // constantes
+
+    const double gravity{9.8};
+
+    // definicao de constante por entrada
+
+    std::cout << "Digite sua idade:";
+    int idade;
+    std::cin >> idade;
+
+    const int idadeUsuario{idade};
+
     // Inicialização direta - melhor performance
     //int variavel(10);
 
@@ -320,9 +377,16 @@ int main()
     std::cout << add(1, multiply(2, 3)) << '\n'; // evaluates 1 + (2 * 3)
     std::cout << add(1, add(2, 3)) << '\n';      // evaluates 1 + (2 + 3)
 
+    std::cout << "5^3 = " << std::pow(5.0, 3.0) << "\n";
+    // parametros e retorno são double
+    // para inteiros é melhor fazer uma função própria
+
+    
     printTypeSizes();
 
     readCharInput();
+
+    literals();
 
     std::getchar();
 
