@@ -262,6 +262,107 @@ void printTypeSizes()
     std::cout << "codigo ASCII char1 - " << static_cast<int>(ch1) << "\n";
 }
 
+void logicalOperations()
+{
+#ifdef ENABLE_DEBUG
+    std::cerr << "logicalOperations chamada\n";
+#endif
+
+    bool bool1{true};
+    bool bool2{false};
+    int valor1{1};
+    int valor2{5};
+
+    int resultado{valor1 < valor2 ? valor1 : valor2};
+
+    std::cout << "O maior entre valor1 e valor2 eh: " << resultado << "\n";
+
+    if (valor1 > valor2)
+    {
+        std::cout << "Valor1 eh maior que valor2\n";
+    }
+    else
+    {
+        std::cout << "Valor2 eh maior que valor1\n";
+    }
+
+    if (valor1 > 0 && valor2 > 0)
+    {
+        std::cout << "Valor1 e Valor2 são positivos\n";
+    }
+    else
+    {
+        std::cout << "Valor1 ou valor2 tem valor nulo ou negativo\n";
+    }
+
+    if (valor1 >= 1 || valor2 < 2)
+    {
+        std::cout << "valor1 é maior ou igual a 1 ou valor2 é menor que 2\n";
+    }
+    else
+    {
+        std::cout << "valor1 é menor que 1 e valor2 é maior ou igual a 2\n";
+    }
+
+    // operadores binarios
+
+    // mais seguro utilizar unsigned
+    unsigned int valor3{15};
+    unsigned int valor4{1};
+
+    //  shifts
+    std::cout << "Valores originais: " << valor3 << " e " << valor4 << "\n";
+    valor3 = valor3 << 2;
+    valor4 = valor4 << 2;
+    std::cout << "Valores deslocados 2 bits para a esquerda: " << valor3 << " e " << valor4 << "\n";
+
+    valor3 = 15; // redefinição para evitar perda de bits pelo shift anterior
+    valor4 = 1;
+    valor3 = valor3 >> 2;
+    valor4 = valor4 >> 2; // há perda de bits nos 2 valores quando se faz algum shift para a direita
+    std::cout << "Valores deslocados 2 bits para a direita: " << valor3 << " e " << valor4 << "\n";
+
+    // not
+    valor3 = 15;
+    valor4 = 1;
+    std::cout << "Not bit a bit de " << valor3 << " eh " << ~valor3 << "\n";
+
+    // and
+    std::cout << "valor3 and valor4 eh " << (valor3 & valor4) << "\n";
+
+    // or
+    std::cout << "valor3 or valor4 eh " << (valor3 | valor4) << "\n";
+
+    // xor
+    std::cout << "valor3 xor valor4 eh " << (valor3 ^ valor4) << "\n";
+
+    // atribuicoes
+    // assim como é possível fazer as contrações x += 1, -=, /=, %=
+    // também é possível fazer x <<= 1, >>=, &=, |=, ^=
+}
+
+// definição  de variaveis globais devem estar logo abaixo dos includes
+
+int globalVar{4};
+
+// usar prefixo g_ em variaveis globais
+
+// para tornar uma variável global acessível por outros arquivos
+extern int reallyGlobalVar{5};
+
+// para tornar uma variável global acessível apenas por este arquivo
+static int reallyNotGlobalVar{5};
+
+void globalVars()
+{
+    // é possível usar variavel local e global com o mesmo nome
+    // a local será priorizada, porém, é possível acessar a variável global também
+    int globalVar{10}; // variavel local, oculta a global
+
+    std::cout << "Valor variavel local " << globalVar << '\n';
+    std::cout << "Valor variavel global " << ::globalVar << '\n';
+}
+
 void printAdd(int x, int y)
 {
 #ifdef ENABLE_DEBUG
@@ -296,12 +397,26 @@ int multiply(int z, int w)
     return z * w;
 }
 
+// var global que está em global.cpp
+extern int varGlobal1;
+
+// apenas este arquivo poderá chamar essa função
+static void funcaoEstatica()
+{
+    std::cout << "essa é uma funcao estatica, apenas main.cpp pode usar ela.\n";
+}
+
 int main()
 {
 #ifdef ENABLE_DEBUG
     // imprimir erros sem atraso
     std::cerr << "main chamada\n";
 #endif
+
+    // var externa - forward declaration
+    //extern int varGlobal2;
+    //std::cout << "varGlobal2 : " << varGlobal2 << '\n';
+    // deve ter impresso 50, que foi o valor definido em global.cpp
 
     // constantes
 
@@ -381,12 +496,16 @@ int main()
     // parametros e retorno são double
     // para inteiros é melhor fazer uma função própria
 
-    
+    // pre-decremento e pre-incremento tem melhor performance que pós
     printTypeSizes();
 
     readCharInput();
 
     literals();
+
+    logicalOperations();
+
+    globalVars();
 
     std::getchar();
 
