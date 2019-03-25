@@ -24,6 +24,27 @@
 
 #define PRINT_CAIO
 
+// typedef - apenas um alias - ajuda na documentacao, por exemplo esclarece o que uma função retorna, não apenas o tipo
+// dependendo do nome dado
+// tambem ajuda na manutenabilidade - se diversas funções e/ou variáveis tiverem que mudar de short para int, é muito mais fácil
+// desde que tenha usado o alias nestes lugares, só é necessário alterar a linha de definição do alias - cuidar int>float por questões de comparações ==
+
+typedef double distance_t;
+// em c++11
+//using distance_t = double;
+// usar sufixo _t para mostrar que é typedef
+
+// cross-platform - "renomear" tipos de variaveis
+// #ifdef INT_2_BYTES
+// typedef char int8_t;
+// typedef int int16_t;
+// typedef long int32_t;
+// #else
+// typedef char int8_t;
+// typedef short int16_t;
+// typedef int int32_t;
+// #endif
+
 void divisaoCast()
 {
     // divisao de inteiros resulta em inteiro
@@ -441,6 +462,8 @@ enum Color
     COLOR_RED,   // atribuido à 2
     COLOR_GREEN, // atribuido à 3
 
+    // valores enum são avaliados para numeros inteiros
+
     // ANIMAL_CAT = -3,
     //ANIMAL_DOG, // assigned -2
     //ANIMAL_PIG, // assigned -1
@@ -450,7 +473,55 @@ enum Color
 
     // enum conta para cima. Se algo for definido, contará a partir dele
     // melhor nao atribuir numeros aos enum
+
+    // enum pode ser usado para documentacao
+    // algo como codigos de erro
+    // exemplo abaixo
+
 };
+
+// enum ParseResult
+// {
+//     SUCCESS = 0,
+//     ERROR_OPENING_FILE = -1,
+//     ERROR_READING_FILE = -2,
+//     ERROR_PARSING_FILE = -3
+// };
+
+// ParseResult readFileContents()
+// {
+//     if (!openFile())
+//         return ERROR_OPENING_FILE;
+//     if (!readFile())
+//         return ERROR_READING_FILE;
+//     if (!parsefile())
+//         return ERROR_PARSING_FILE;
+
+//     return SUCCESS;
+// }
+
+void enumClass()
+{
+    enum class Color // "enum class" defines this as a scoped enumeration instead of a standard enumeration
+    {
+        RED, // RED is inside the scope of Color
+        BLUE
+    };
+
+    enum class Fruit
+    {
+        BANANA, // BANANA is inside the scope of Fruit
+        APPLE
+    };
+
+    Color color = Color::RED;    // note: RED is not directly accessible any more, we have to use Color::RED
+    Fruit fruit = Fruit::BANANA; // note: BANANA is not directly accessible any more, we have to use Fruit::BANANA
+
+    if (color == fruit) // compile error here, as the compiler doesn't know how to compare different types Color and Fruit
+        std::cout << "color and fruit are equal\n";
+    else
+        std::cout << "color and fruit are not equal\n";
+}
 
 int main()
 {
@@ -633,6 +704,8 @@ int main()
     std::cout << "Age: " << age << '\n';
 
     std::cout << "Your name is " << fullName.length() << " chars long\n";
+
+    distance_t howFar;
 
     //std::getchar();
 
