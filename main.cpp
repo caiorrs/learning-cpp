@@ -1,10 +1,13 @@
 #include "add.h"
 #include "constants.h"
+#include "sub.h"
 
-#include <iostream>
+#include <cmath> // para potenciacao por exemplo
 #include <cstdio>
 #include <iomanip> // for std::setprecision()
-#include <cmath>   // para potenciacao por exemplo
+#include <string>
+#include <limits>
+#include <iostream>
 
 // comentar a linha abaixo para desabilitar debug
 //#define ENABLE_DEBUG
@@ -34,13 +37,32 @@ void divisaoCast()
     // no caso do módulo, o resultado pode ser negativo ou positivo
 }
 
+// static duration variables
+void addAndPrint()
+{
+    static int s_value{1}; // s_ -> prefixo para static
+    // por ter sido declarada como static ela é declarada e inicializada apenas
+    // uma vez depois da primeira execução da função, ela vai continuar com o
+    // valor dela
+    ++s_value;
+    std::cout << "The static value is " << s_value << '\n';
+} // a variável nao é destruida após o término da função, mas é acessível
+  // apenas por ela
+
+int counter()
+{
+    static int s_counter{0};
+    return s_counter++;
+}
+
 void literals()
 {
 #ifdef ENABLE_DEBUG
     std::cerr << "literals chamada\n"
 #endif
         int radius{5};
-    double circumference = 2 * radius * constants::pi;
+
+    double circumference = 2 * radius * Constants::pi;
     int a = 5;
     int b = 0xFF;
     int c = 012;    // octal 12, decimal 10
@@ -59,9 +81,8 @@ void literals()
     // int	l or L	long
     // int	ul, uL, Ul, UL, lu, lU, Lu, or LU	unsigned long
     // int	ll or LL	long long
-    // int	ull, uLL, Ull, ULL, llu, llU, LLu, or LLU	unsigned long long
-    // double	f or F	float
-    // double	l or L	long double
+    // int	ull, uLL, Ull, ULL, llu, llU, LLu, or LLU	unsigned long
+    // long double	f or F	float double	l or L	long double
 }
 
 void readCharInput()
@@ -74,7 +95,8 @@ void readCharInput()
     char chInput;
     std::cin >> chInput;
 
-    std::cout << "O valor de " << chInput << " em ASCII eh " << static_cast<int>(chInput) << "\n";
+    std::cout << "O valor de " << chInput << " em ASCII eh "
+              << static_cast<int>(chInput) << "\n";
 }
 
 void funcao()
@@ -100,7 +122,7 @@ void funcao()
 }
 
 // Prototipo
-//void imprimeTela();
+// void imprimeTela();
 
 void imprimeTela()
 {
@@ -168,7 +190,8 @@ void printTypeSizes()
     std::cout << c1 << "\n";
     std::cout << c2 << "\n";
     // se aparecer A -> trata como char
-    // preferencialmente usar int16, para ter certeza que será tratado como inteiro
+    // preferencialmente usar int16, para ter certeza que será tratado como
+    // inteiro
 
     // tipos de int mais rápidos com pelo menos x bits
     // int_fast8_t, int_fast16_t, int_fast32_t, int_fast64_t
@@ -180,7 +203,8 @@ void printTypeSizes()
 
     // boas práticas
     int x(5);      // 5 means integer
-    double y(5.0); // 5.0 is a floating point literal (no suffix means double type by default)
+    double y(5.0); // 5.0 is a floating point literal (no suffix means double
+                   // type by default)
     float z(5.0f); // 5.0 is a floating point literal, f suffix means float type
 
     // exibição de ponto flutuante
@@ -188,7 +212,8 @@ void printTypeSizes()
     std::cout << 5.1f << "\n";
     std::cout << 9876543.21 << "\n"; // deve exibir em formato cientifico
     // por padrão cout trunca em 6 digitos significativos
-    std::cout << std::setprecision(16); // altera a precisão de cout para 16 digitos significativos
+    std::cout << std::setprecision(
+        16); // altera a precisão de cout para 16 digitos significativos
     std::cout << 9876543.21 << "\n";
 
     // float tem precisao entre 6 e 9 digitos significativos
@@ -314,13 +339,16 @@ void logicalOperations()
     std::cout << "Valores originais: " << valor3 << " e " << valor4 << "\n";
     valor3 = valor3 << 2;
     valor4 = valor4 << 2;
-    std::cout << "Valores deslocados 2 bits para a esquerda: " << valor3 << " e " << valor4 << "\n";
+    std::cout << "Valores deslocados 2 bits para a esquerda: " << valor3 << " e "
+              << valor4 << "\n";
 
     valor3 = 15; // redefinição para evitar perda de bits pelo shift anterior
     valor4 = 1;
     valor3 = valor3 >> 2;
-    valor4 = valor4 >> 2; // há perda de bits nos 2 valores quando se faz algum shift para a direita
-    std::cout << "Valores deslocados 2 bits para a direita: " << valor3 << " e " << valor4 << "\n";
+    valor4 = valor4 >> 2; // há perda de bits nos 2 valores quando se faz algum
+                          // shift para a direita
+    std::cout << "Valores deslocados 2 bits para a direita: " << valor3 << " e "
+              << valor4 << "\n";
 
     // not
     valor3 = 15;
@@ -406,6 +434,24 @@ static void funcaoEstatica()
     std::cout << "essa é uma funcao estatica, apenas main.cpp pode usar ela.\n";
 }
 
+enum Color
+{
+    COLOR_BLACK, // atribuido à 0
+    COLOR_BLUE,  // atribuido à 1
+    COLOR_RED,   // atribuido à 2
+    COLOR_GREEN, // atribuido à 3
+
+    // ANIMAL_CAT = -3,
+    //ANIMAL_DOG, // assigned -2
+    //ANIMAL_PIG, // assigned -1
+    //ANIMAL_HORSE = 5,
+    //ANIMAL_GIRAFFE = 5, // shares same value as ANIMAL_HORSE // evitar enum com dois valores iguais
+    //ANIMAL_CHICKEN // assigned 6
+
+    // enum conta para cima. Se algo for definido, contará a partir dele
+    // melhor nao atribuir numeros aos enum
+};
+
 int main()
 {
 #ifdef ENABLE_DEBUG
@@ -413,9 +459,16 @@ int main()
     std::cerr << "main chamada\n";
 #endif
 
+    // tipo de dado definido pelo usuario
+    Color fontColor = COLOR_BLACK;
+    Color borderColor(COLOR_BLUE);
+    Color paintColor{COLOR_RED};
+
+    std::cout << "FontColor: " << fontColor << '\n';
+
     // var externa - forward declaration
-    //extern int varGlobal2;
-    //std::cout << "varGlobal2 : " << varGlobal2 << '\n';
+    // extern int varGlobal2;
+    // std::cout << "varGlobal2 : " << varGlobal2 << '\n';
     // deve ter impresso 50, que foi o valor definido em global.cpp
 
     // constantes
@@ -431,14 +484,16 @@ int main()
     const int idadeUsuario{idade};
 
     // Inicialização direta - melhor performance
-    //int variavel(10);
+    // int variavel(10);
 
     // Copy initialization
-    //int variavel2 = 10;
+    // int variavel2 = 10;
 
-    // Brace initialization (Uniform initialization) - aoo tentar atribuir um valor incompativel com o tipo é gerado um warning
-    //int variavel3{5};
-    //int variavel4{}; // Inicializa com 0 ou vazio, dependendo do tipo de variavel
+    // Brace initialization (Uniform initialization) - aoo tentar atribuir um
+    // valor incompativel com o tipo é gerado um warning
+    // int variavel3{5};
+    // int variavel4{}; // Inicializa com 0 ou vazio, dependendo do tipo de
+    // variavel
 
     float a, b, soma, subtracao, multiplicacao, divisao;
 
@@ -455,7 +510,9 @@ int main()
     multiplicacao = a * b;
     divisao = a / b;
 
-    std::cout << "Soma = " << soma << '\n'; // \n é melhor pois não faz flush. cout já faz flush, e endl tambem, sendo desnecessario
+    std::cout << "Soma = " << soma
+              << '\n'; // \n é melhor pois não faz flush. cout já faz flush, e
+                       // endl tambem, sendo desnecessario
     std::cout << "Subtracao = " << subtracao << '\n';
     std::cout << "Multiplicacao = " << multiplicacao << std::endl;
     std::cout << "Divisao = " << divisao << std::endl;
@@ -467,7 +524,8 @@ int main()
     // int x{ 2 };             // initialize variable x with value 2
     // int y{ 2 + 3 };         // initialize variable y with value 5
     // int z{ (2 * 3) + 4 };   // initialize variable z with value 10
-    // int w{ y };             // initialize variable w with value 5 (the current value of variable y)
+    // int w{ y };             // initialize variable w with value 5 (the current
+    // value of variable y)
 
     imprimeTela();
 
@@ -475,7 +533,7 @@ int main()
     printDouble(num);
     // ou
     //
-    //printDouble(getValueFromUser());
+    // printDouble(getValueFromUser());
 
     int x{getValueFromUser()};
     int y{getValueFromUser()};
@@ -487,7 +545,8 @@ int main()
     // forma de forçar ordem de execução
     // int a{ a() }; // a() will always be called first
     // int b{ b() }; // b() will always be called second
-    // someFunction(a, b); // it doesn't matter whether a or b are copied first because they are just values
+    // someFunction(a, b); // it doesn't matter whether a or b are copied first
+    // because they are just values
 
     std::cout << add(1, multiply(2, 3)) << '\n'; // evaluates 1 + (2 * 3)
     std::cout << add(1, add(2, 3)) << '\n';      // evaluates 1 + (2 + 3)
@@ -507,7 +566,75 @@ int main()
 
     globalVars();
 
-    std::getchar();
+    addAndPrint();
+    addAndPrint();
+    addAndPrint();
+
+    std::cout << "O contador esta em " << counter() << '\n';
+    std::cout << "O contador esta em " << counter() << '\n';
+    std::cout << "O contador esta em " << counter() << '\n';
+    std::cout << "O contador esta em " << counter() << '\n';
+    std::cout << "O contador esta em " << counter() << '\n';
+
+    std::cout << "Subtracao namespace Sub: " << Sub::sub(5, 3) << '\n';
+    // é possível aninhar namespaces, para usar ns1::ns2::ns...::funcao()/constante
+    // por essa razao, tambem é possivel criar apelidos da forma
+    // namespace ns = ns1::ns2;
+
+    // using statements // seguem as regras de escopo // não é recomendado usar "using"
+    // se estiver utilizando muito um objeto de um namespace
+    // se encontrar outro objeto com mesma identificação, irá preferir o que está em using
+    // é possível fazer por exemplo
+    // using std::cout; // using declaration
+    // cout << "It's working\n";
+    // ou usar um namespace inteiro
+    // se encontrar outro objeto com mesma identificação, irá gerar erro de ambiguidade
+    // using namespace std; // using directive
+    // cout << "This works as well\n";
+
+    //type casting
+
+    int i{10};
+    int j{4};
+    float f = (float)i / j;
+    // outra forma
+    // float f = float(i) / j;
+    // evitar o uso das duas formas acima
+
+    // static cast
+    // mais usado quando um tipo é fundamentalmente diferente do outro
+    // como char <-> int
+    // float f = static_cast<float>(i) / j
+    // evitar o uso de casts
+
+    std::cout << "Divisao = " << f << '\n';
+
+    // std::string
+
+    std::string myString;
+    std::string myName("Caio");
+    std::cout << "My name is: " << myName << '\n';
+
+    std::cin.ignore(32767, '\n'); // ignore up to 32767 characters until a \n is removed
+    // limpando buffer que o cin deixou
+    // ou
+    //std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // ignore unlimited characters until a \n is removed
+
+    // leitura/entrada de string
+    std::cout << "Enter your first and last name: ";
+    std::string fullName;
+    std::getline(std::cin, fullName);
+
+    std::cout << "Enter age: ";
+    std::string age;
+    std::getline(std::cin, age);
+
+    std::cout << "Full name: " << fullName << '\n';
+    std::cout << "Age: " << age << '\n';
+
+    std::cout << "Your name is " << fullName.length() << " chars long\n";
+
+    //std::getchar();
 
     return 0;
 }

@@ -11,6 +11,8 @@
         "-g",
         "main.cpp",
         "add.cpp",
+        "constants.cpp",
+        "sub.cpp",
         "-Wall",
         "-Wextra",
         "-Wpedantic",
